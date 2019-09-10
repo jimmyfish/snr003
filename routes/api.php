@@ -24,11 +24,14 @@ Route::group([
         $route->get('/', 'Api\Category\ListAction');
         $route->get('detail/{id}', 'Api\Category\DetailAction');
         $route->post('create', 'Api\Category\CreateAction');
+        $route->get('delete/{id}', 'Api\Category\DeleteAction');
     });
 
     $route->group(['prefix' => 'product'], function ($route) {
         $route->get('/', 'Api\Product\ListAction');
         $route->post('create', 'Api\Product\CreateAction');
+        $route->get('delete/{id}', 'Api\Product\DeleteAction');
+        $route->get('update/{id}', 'Api\Product\UpdateAction');
     });
 
 });

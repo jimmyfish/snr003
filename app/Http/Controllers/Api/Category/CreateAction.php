@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Category;
 
-use App\Category;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +23,6 @@ class CreateAction extends Controller
 
         $category = Category::create($request->all());
 
-        return response()->json(['success' => $category->varian . 'created'], 200);
+        return response()->json(['success' => $category->varian . ' created'], 200);
     }
 }
