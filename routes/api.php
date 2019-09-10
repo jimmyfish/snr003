@@ -22,6 +22,7 @@ Route::group([
 ], function ($route) {
     $route->group(['prefix' => 'category'], function ($route) {
         $route->get('/', 'Api\Category\ListAction');
+        $route->get('detail/{id}', 'Api\Category\DetailAction');
         $route->post('create', 'Api\Category\CreateAction');
     });
 

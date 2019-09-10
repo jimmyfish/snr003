@@ -18,7 +18,7 @@ class AddCategoryToProductTable extends Migration
             $table->foreign('category_id')
                 ->references('id')
                 ->on('category')
-                ->onDelete('SET NULL')
+                ->onDelete('CASCADE')
                 ->onUpdate('CASCADE');
         });
     }

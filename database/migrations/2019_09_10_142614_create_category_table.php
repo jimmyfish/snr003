@@ -15,8 +15,11 @@ class CreateCategoryTable extends Migration
     {
         Schema::create('category', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name', 255);
             $table->string('varian', 255);
-            $table->unsignedInteger('volume');
+            $table->string('volume', 255);
+            $table->string('descriptions')->nullable();
+            $table->string('header')->nullable();
         });
     }
 

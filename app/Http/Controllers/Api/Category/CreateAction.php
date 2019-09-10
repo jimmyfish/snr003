@@ -12,6 +12,7 @@ class CreateAction extends Controller
     public function __invoke(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'name' => 'required',
             'varian' => 'required',
             'volume' => 'required|numeric',
         ]);
