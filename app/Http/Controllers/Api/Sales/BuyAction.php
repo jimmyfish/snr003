@@ -12,6 +12,10 @@ class BuyAction extends Controller
     {
         $product = Product::find($request->product_id);
 
+        if (is_null($product)) {
+            return response()->json(['error' => 'Product not found'], 500);
+        }
+
         $product->sales()->create($request->all());
 
         return response()->json(['success' => 'Buy successful'], 200);
