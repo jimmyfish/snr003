@@ -21,17 +21,28 @@ Route::group([
 
 ], function ($route) {
     $route->group(['prefix' => 'category'], function ($route) {
-        $route->get('/', 'Api\Category\ListAction');
-        $route->get('detail/{id}', 'Api\Category\DetailAction');
-        $route->post('create', 'Api\Category\CreateAction');
-        $route->get('delete/{id}', 'Api\Category\DeleteAction');
+        $route->get('/', 'Api\Category\ListAction')->name('category.list');
+        $route->get('detail/{id}', 'Api\Category\DetailAction')->name('category.detail');
+        $route->post('create', 'Api\Category\CreateAction')->name('category.create');
+        $route->get('delete/{id}', 'Api\Category\DeleteAction')->name('category.delete');
+        $route->post('update/{id}', 'Api\Category\UpdateAction')->name('category.update');
     });
 
     $route->group(['prefix' => 'product'], function ($route) {
-        $route->get('/', 'Api\Product\ListAction');
-        $route->post('create', 'Api\Product\CreateAction');
-        $route->get('delete/{id}', 'Api\Product\DeleteAction');
-        $route->get('update/{id}', 'Api\Product\UpdateAction');
+        $route->get('/', 'Api\Product\ListAction')->name('product.list');
+        $route->post('create', 'Api\Product\CreateAction')->name('product.create');
+        $route->get('delete/{id}', 'Api\Product\DeleteAction')->name('product.delete');
+        $route->post('update/{id}', 'Api\Product\UpdateAction')->name('product.update');
     });
 
+    $route->group(['prefix' => 'customer'], function ($route) {
+        $route->get('/', 'Api\Customer\ListAction')->name('customer.list');
+        $route->get('/detail/{id}', 'Api\Customer\DetailAction')->name('customer.detail');
+        $route->get('/delete/{id}', 'Api\Customer\DeleteAction')->name('customer.delete');
+    });
+
+    $route->group(['prefix' => 'sales'], function ($route) {
+        $route->get('/history', 'Api\Sales\HistoryAction')->name('sales.history');
+        $route->post('/cart', 'Api\Sales\BuyAction')->name('sales.buy');
+    });
 });

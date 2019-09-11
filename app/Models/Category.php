@@ -9,7 +9,7 @@ class Category extends Model
     protected $table = 'category';
 
     protected $fillable = [
-        'varian', 'volume', 'name'
+        'varian', 'volume', 'name', 'descriptions', 'header'
     ];
 
     public $timestamps = false;

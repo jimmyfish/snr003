@@ -15,6 +15,8 @@ class CategoryRepository implements CategoryRepositoryInterface
         'name',
         'varian',
         'volume',
+        'descriptions',
+        'header',
     ];
 
     private $model;
