@@ -1,48 +1,83 @@
 <?php
 
-use Illuminate\Http\Request;
+Route::group([
+    'prefix' => 'auth',
+], function () {
+    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('register', 'AuthController@register')->name('register');
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::group([
+        'middleware' => 'auth:api'
+    ], function () {
+        Route::get('logout', 'AuthController@logout')->name('logout');
+        Route::get('user', 'AuthController@user')->name('user');
+    });
 });
 
 Route::group([
+    'middleware' => 'auth:api'
+], function () {
+    Route::group([
+        'middleware' => 'has_role_admin',
+    ], function () {
 
-], function ($route) {
-    $route->group(['prefix' => 'category'], function ($route) {
-        $route->get('/', 'Api\Category\ListAction')->name('category.list');
-        $route->get('detail/{id}', 'Api\Category\DetailAction')->name('category.detail');
-        $route->post('create', 'Api\Category\CreateAction')->name('category.create');
-        $route->get('delete/{id}', 'Api\Category\DeleteAction')->name('category.delete');
-        $route->post('update/{id}', 'Api\Category\UpdateAction')->name('category.update');
     });
 
-    $route->group(['prefix' => 'product'], function ($route) {
-        $route->get('/', 'Api\Product\ListAction')->name('product.list');
-        $route->post('create', 'Api\Product\CreateAction')->name('product.create');
-        $route->get('delete/{id}', 'Api\Product\DeleteAction')->name('product.delete');
-        $route->post('update/{id}', 'Api\Product\UpdateAction')->name('product.update');
+    Route::group(['prefix' => 'category'], function ($route) {
+        Route::get('/', 'Api\Category\ListAction')
+            ->name('category.list');
+
+        Route::get('detail/{id}', 'Api\Category\DetailAction')
+            ->name('category.detail');
+
+        Route::post('create', 'Api\Category\CreateAction')
+            ->name('category.create');
+
+        Route::get('delete/{id}', 'Api\Category\DeleteAction')
+            ->name('category.delete');
+
+        Route::post('update/{id}', 'Api\Category\UpdateAction')
+            ->name('category.update');
     });
 
-    $route->group(['prefix' => 'customer'], function ($route) {
-        $route->get('/', 'Api\Customer\ListAction')->name('customer.list');
-        $route->get('/detail/{id}', 'Api\Customer\DetailAction')->name('customer.detail');
-        $route->get('/delete/{id}', 'Api\Customer\DeleteAction')->name('customer.delete');
+    Route::group(['prefix' => 'product'], function ($route) {
+        Route::get('/', 'Api\Product\ListAction')
+            ->name('product.list');
+
+        Route::post('create', 'Api\Product\CreateAction')
+            ->name('product.create');
+
+        Route::group([
+            'middleware' => 'has_role_admin',
+        ], function () {
+            Route::get('delete/{id}', 'Api\Product\DeleteAction')
+                ->name('product.delete');
+
+            Route::post('update/{id}', 'Api\Product\UpdateAction')
+                ->name('product.update');
+        });
     });
 
-    $route->group(['prefix' => 'sales'], function ($route) {
-        $route->get('/history', 'Api\Sales\HistoryAction')->name('sales.history');
-        $route->post('/cart', 'Api\Sales\BuyAction')->name('sales.buy');
+    Route::group(['prefix' => 'customer'], function ($route) {
+        Route::get('/', 'Api\Customer\ListAction')
+            ->name('customer.list');
+
+        Route::get('/detail/{id}', 'Api\Customer\DetailAction')
+            ->name('customer.detail');
+
+        Route::get('/delete/{id}', 'Api\Customer\DeleteAction')
+            ->name('customer.delete');
+    });
+
+    Route::group(['prefix' => 'sales'], function () {
+        Route::get('/history', 'Api\Sales\HistoryAction')
+            ->name('sales.history');
+
+        Route::group([
+            'middleware' => 'has_role_customer',
+        ], function () {
+            Route::post('/cart', 'Api\Sales\BuyAction')
+                ->name('sales.buy');
+        });
     });
 });

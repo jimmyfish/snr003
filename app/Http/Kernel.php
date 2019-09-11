@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\HasRoleAdminMiddleware;
+use App\Http\Middleware\HasRoleCustomerMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -59,5 +61,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'has_role_admin' => HasRoleAdminMiddleware::class,
+        'has_role_customer' => HasRoleCustomerMiddleware::class,
     ];
 }
