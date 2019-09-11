@@ -15,6 +15,10 @@ class HasRoleAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if ($request->user()->role !== 0) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
         return $next($request);
     }
 }

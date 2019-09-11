@@ -17,11 +17,8 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
-    Route::group([
-        'middleware' => 'has_role_admin',
-    ], function () {
-
-    });
+    Route::post('/profile/update', 'Api\User\UpdateAction')
+        ->name('update.profile');
 
     Route::group(['prefix' => 'category'], function ($route) {
         Route::get('/', 'Api\Category\ListAction')
@@ -30,22 +27,23 @@ Route::group([
         Route::get('detail/{id}', 'Api\Category\DetailAction')
             ->name('category.detail');
 
-        Route::post('create', 'Api\Category\CreateAction')
-            ->name('category.create');
+        Route::group([
+            'middleware' => 'has_role_admin',
+        ], function () {
+            Route::post('create', 'Api\Category\CreateAction')
+                ->name('category.create');
 
-        Route::get('delete/{id}', 'Api\Category\DeleteAction')
-            ->name('category.delete');
+            Route::get('delete/{id}', 'Api\Category\DeleteAction')
+                ->name('category.delete');
 
-        Route::post('update/{id}', 'Api\Category\UpdateAction')
-            ->name('category.update');
+            Route::post('update/{id}', 'Api\Category\UpdateAction')
+                ->name('category.update');
+        });
     });
 
     Route::group(['prefix' => 'product'], function ($route) {
         Route::get('/', 'Api\Product\ListAction')
             ->name('product.list');
-
-        Route::post('create', 'Api\Product\CreateAction')
-            ->name('product.create');
 
         Route::group([
             'middleware' => 'has_role_admin',
@@ -55,6 +53,9 @@ Route::group([
 
             Route::post('update/{id}', 'Api\Product\UpdateAction')
                 ->name('product.update');
+
+            Route::post('create', 'Api\Product\CreateAction')
+                ->name('product.create');
         });
     });
 
@@ -70,8 +71,12 @@ Route::group([
     });
 
     Route::group(['prefix' => 'sales'], function () {
-        Route::get('/history', 'Api\Sales\HistoryAction')
-            ->name('sales.history');
+        Route::group([
+            'middleware' => 'has_role_admin',
+        ], function () {
+            Route::get('/history', 'Api\Sales\HistoryAction')
+                ->name('sales.history');
+        });
 
         Route::group([
             'middleware' => 'has_role_customer',
