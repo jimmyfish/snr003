@@ -59,7 +59,10 @@ Route::group([
         });
     });
 
-    Route::group(['prefix' => 'customer'], function ($route) {
+    Route::group([
+        'prefix' => 'customer',
+        'middleware' => 'has_role_admin'
+    ], function ($route) {
         Route::get('/', 'Api\Customer\ListAction')
             ->name('customer.list');
 
